@@ -2,6 +2,7 @@
 #include"Custom.h"
 #include<fstream>
 #include"Graph.h"
+// test
 //姓名 密码 年龄 账号 手机号
 bool addCustom(Custom custom);  //追加写入一个Custom
 
