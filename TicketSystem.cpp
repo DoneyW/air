@@ -37,7 +37,7 @@ bool TicketSystem:: purchaseTicket(Path path, int num_tickets, std::string IDNum
     }
 
 
-    //退票
+//退票
 bool TicketSystem:: refundTicket(Path path, int num_tickets, std::string IDNumber) {
         //遍历路径上的所有边，将可售票数加上退票的票数         
         for (int i = 0; i < path.flights.size(); i++) {
