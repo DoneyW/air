@@ -12,27 +12,33 @@ class Custom_Tree {   //红黑树，用于查找用户
 public:
 	Custom_Tree();
 	string get(string IDNumber);//查找节点，查询成功返回密码，查询失败返回空字符串
-	void put(); //添加节点
-	void deleteCustom();//
-private:
 
+	//void deleteCustom();//
+	void put(string IDNumber, string passWord);
+private:
 	class Node{
 	public:
-		Node(Custom custum);
+		Node(string IDNumber, string passWord);
+		Node* left, * right;
+		bool color;//由父节点指向他的节点的键的颜色
+		int N; //以本节点位根节点的节点总数
+		string getNumber() { return IDNumber; };
+		string getpassWord() { return passWord; };
+		void chgPassWord(string newPassWord) { passWord = newPassWord; };
 	private:
-		static const bool RED = true;//
-		static const bool BLACK = false;//
 		string IDNumber; //键
 		string passWord; //值
-		Node *left, *right;
-		int N;//以该节点为根的节点总数
-		bool color;//由父节点指向他的节点的键的颜色
-		bool isRed();
 	};
 	Node* root; //根节点
-	void rotateRight(Node h);
-	void roateLeft(Node h);
-	void flipColors(Node h);
+	Node* rotateRight(Node *h);
+	Node* rotateLeft(Node *h);
+	void flipColors(Node *h);
+	int size(Node* h);
+	static const bool RED = true;//
+	static const bool BLACK = false;//
+	bool isRed(Node *h);
+	Node* put(Node* root,string IDnumber, string passWord); //添加节点
+	string get(Node* h, string ID);
 };
 
 //客户类:
