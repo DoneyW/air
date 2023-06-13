@@ -22,7 +22,7 @@ std::vector<string> getCity();//读取所有城市
 
 std::vector<Flight> getFlight();//读取所有航班
 
-std::vector<Purchase_Record> getRecord();//读取所以购买记录
+std::vector<Purchase_Record> getRecord(string IDNumber);//读取所以购买记录
 
 void writeCity(std::vector<string>);
 
