@@ -100,6 +100,44 @@ std::vector<Flight> getFlight()
 	return flights;
 }
 
+std::vector<Purchase_Record> getRecord(std::string IDNumber)
+{
+	std::vector<Purchase_Record> records;
+	std::ifstream ifs("record.txt", std::ios::in);
+	assert(ifs.is_open());
+	while (!ifs.eof()) {
+		Purchase_Record record;
+		ifs >> record.IDNumber;
+		// ÅÐ¶ÏIDÊÇ·ñÒ»ÖÂ
+		if (record.IDNumber != IDNumber)
+			continue;
+		ifs >> record.flight.start;
+		ifs >> record.flight.end;
+		ifs >> record.flight.length;
+		ifs >> record.flight.price;
+		records.push_back(record);
+	}
+	ifs.close();
+	return records;
+}
+
+void writeRecord(std::vector<Purchase_Record> source) 
+{
+	std::ofstream ofs("record.txt", std::ios::out | std::ios::trunc);
+	for (int i = 0; i < source.size(); i++)
+	{
+		ofs << source[i].IDNumber << std::endl;
+		ofs << source[i].flight.start << std::endl;
+		ofs << source[i].flight.end << std::endl;
+		ofs << source[i].flight.length << std::endl;
+		ofs << source[i].flight.price << std::endl;
+	}
+	
+	ofs.close();
+}
+
+
+
 
 
 
