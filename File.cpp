@@ -5,11 +5,12 @@ bool addCustom(Custom custom)
 {
 	std::ofstream ofs("custom.txt",std::ios::app);
 	if (!ofs.is_open()) return false;
+	ofs << std::endl;
 	ofs << custom.name << std::endl;
 	ofs << custom.passWord << std::endl;
 	ofs<<custom.age <<std::endl;
 	ofs << custom.IDNumber << std::endl;
-	ofs << custom.phoneNumber<< std::endl;
+	ofs << custom.phoneNumber;
 	ofs.close();
 	return true;
 }
@@ -98,6 +99,7 @@ std::vector<Flight> getFlight()
 	ifs.close();
 	return flights;
 }
+
 
 
 

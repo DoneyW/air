@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_FlightItem.h"
@@ -14,7 +14,8 @@ class FlightItem : public QWidget
 public:
 	FlightItem(Path path,QWidget *parent = nullptr);
 	~FlightItem();
-
+signals:
+	void reserve(Path);
 private:
 	Ui::FlightItemClass *ui;
 	Path path;

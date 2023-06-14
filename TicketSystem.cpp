@@ -1,68 +1,47 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<map>
 #include<vector>
 #include<forward_list>
 #include<algorithm>
 #include "Custom.h"
-
+#include "TicketSystem.h"
+#include <vector>
+#include "File.h"
 #define MVMAX 500
-    //¹ºÂò»úÆ±
-bool TicketSystem:: purchaseTicket(Path path, int num_tickets, std::string IDNumber) {
-        //±éÀúÂ·¾¶ÉÏµÄËùÓĞ±ß£¬½«¿ÉÊÛÆ±Êı¼õÈ¥¹ºÂòµÄÆ±Êı
-        for (int i = 0; i < path.flights.size(); i++) {
-            auto& edge = graph.getEdge(path.flights[i].start, path.flights[i].end);
-            edge.flight.tickets -= num_tickets;
-        }
-
-        int total_prices = 0, total_length = 0;
-        //±éÀúÂ·¾¶ÉÏµÄËùÓĞ±ß£¬¼ÆËã×Ü¼Û¸ñºÍ×Ü³¤¶È
-        for (int i = 0; i < path.flights.size(); i++) {
-            auto& edge = graph.getEdge(path.flights[i].start, path.flights[i].end);
-            total_prices += edge.flight.price;
-            total_length += edge.flight.length;
-        }
-
-        //¼ÇÂ¼¹ºÆ±ĞÅÏ¢
-        Purchase_Record record;
-        record.IDNumber = IDNumber;
-        record.flight.start = path.flights[0].start;
-        record.flight.end = path.flights[path.flights.size() - 1].end;
-        record.flight.tickets = num_tickets;
-        record.flight.price = total_prices;
-        record.flight.length = total_length;
-        purchase_records.push_back(record);
-
-        std::cout << "Purchase success! Total price: " << total_prices << std::endl;
-        return true;
+TicketSystem::TicketSystem(std::string IDNumber,Graph *graph) :IDNumber(IDNumber),graph(graph)
+{
+    purchase_records = getRecord(IDNumber);
+}
+//è´­ä¹°æœºç¥¨
+bool TicketSystem:: purchaseTicket(Path path) {
+        //éå†è·¯å¾„ä¸Šçš„æ‰€æœ‰è¾¹ï¼Œå°†å¯å”®ç¥¨æ•°å‡å»è´­ä¹°çš„ç¥¨æ•°
+    
+    for (int i = 0; i <path.city.size()-1; i++)
+    {
+        int idx1 = graph->getIdx(path.city[i]);
+        int idx2 = graph->getIdx(path.city[i + 1]);
+        purchase_records.push_back(graph->buyTicket(idx1, idx2,IDNumber));
     }
+    writeGraph(*graph);
+    writeRecord(purchase_records);
+}
 
 
-//ÍËÆ±
-bool TicketSystem:: refundTicket(Path path, int num_tickets, std::string IDNumber) {
-        //±éÀúÂ·¾¶ÉÏµÄËùÓĞ±ß£¬½«¿ÉÊÛÆ±Êı¼ÓÉÏÍËÆ±µÄÆ±Êı         
-        for (int i = 0; i < path.flights.size(); i++) {
-            auto& edge = graph.getEdge(path.flights[i].start, path.flights[i].end);
-            edge.flight.tickets += num_tickets;
-        }
-        
-        //²éÕÒ¹ºÆ±¼ÇÂ¼         
-        auto it = std::find_if(purchase_records.begin(), purchase_records.end(), [&](const Purchase_Record& r) {
-            return r.IDNumber == IDNumber && r.flight.start == path.flights[0].start && r.flight.end == path.flights[path.flights.size() - 1].end;
-        });
-
-        //Èô´æÔÚ¹ºÆ±¼ÇÂ¼ÔòÖ´ĞĞÍË¿î²Ù×÷£¬·ñÔòÌáÊ¾ÎŞ¼ÇÂ¼         
-        if (it != purchase_records.end()) {
-            int refund_price = it->flight.price * num_tickets / it->flight.tickets;
-            it->flight.tickets -= num_tickets;
-            it->flight.price -= refund_price;
-            std::cout << "Refund success! Refund price: " << refund_price << std::endl;
-            return true;
-        }
-        else {
-            std::cout << "No record found!" << std::endl;
-            return false;
+//é€€ç¥¨
+bool TicketSystem:: refundTicket(std::string st,std::string ed,std::string IDNumber) {
+        //éå†è·¯å¾„ä¸Šçš„æ‰€æœ‰è¾¹ï¼Œå°†å¯å”®ç¥¨æ•°åŠ ä¸Šé€€ç¥¨çš„ç¥¨æ•°         
+    int idx1 = graph->getIdx(st);
+    int idx2 = graph->getIdx(ed);
+    graph->refundTicket(idx1, idx2);
+    for (int i = 0; i < purchase_records.size(); ++i)
+    {
+        if (purchase_records[i].flight.start == st && purchase_records[i].flight.end == ed) {
+            purchase_records.erase(purchase_records.begin()+i);
         }
     }
+    writeGraph(*graph);
+    writeRecord(purchase_records);
+}
 
 
 

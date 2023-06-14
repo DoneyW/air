@@ -31,4 +31,6 @@ void Rg::CreatAcc()
 	else inf = "创建失败";
 	QMessageBox message(QMessageBox::Information, "",
 		inf, QMessageBox::Yes, NULL);
+	message.exec();
+	this->close();
 }

@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>FlightItem</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="PsBt_Book">
    <property name="geometry">
     <rect>
      <x>150</x>

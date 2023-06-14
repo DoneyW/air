@@ -5,6 +5,14 @@ Custom_Tree::Custom_Tree()
 	root = NULL;
 }
 
+Custom_Tree::Custom_Tree(std::vector<Custom> &cus)
+{
+	root = NULL;
+	for (auto i : cus) {
+		this->put(i.IDNumber, i.passWord);
+	}
+}
+
 string Custom_Tree::get(string IDNumber)
 {
 	return get(root, IDNumber);

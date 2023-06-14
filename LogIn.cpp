@@ -6,11 +6,18 @@
 #include "Rg.h"
 #include"qstyleoption.h"
 #include "qpainter.h"
+#include "File.h"
+#include <vector>
+#include "Custom.h"
+#include "qmessagebox.h"
+#include "MWindow.h"
 LogIn::LogIn(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::LogInClass())
 {
     ui->setupUi(this);
+    std::vector<Custom> custums = getCustom();
+    ct=new Custom_Tree(custums);
     connect(ui->PsBt_LogIn, &QPushButton::clicked, this, &LogIn::Log);
     connect(ui->PsBt_Rg, &QPushButton::clicked, this, &LogIn::Rge);
 }
@@ -30,19 +37,26 @@ void LogIn::Rge()
 }
 
 void LogIn::Log() {
-    /*QString AccNum = ui->LiEd_AccNum->text();
-    QString PassWord = ui->LiEd_PsWd->text();*/
-    /*qDebug() << AccNum << " " << PassWord;*/
-   /* User u(AccNum.toLatin1().data(),PassWord.toLatin1().data());
-    User_DataBase db;
-    if (db.CheckUser(u) == 3)
+    std::string Number=ui->LiEd_AccNum->text().toStdString();
+    std::string value = ct->get(Number);
+    if (value.size() == 0) {
+        QMessageBox message(QMessageBox::Information, "", "账号不存在", QMessageBox::Yes
+            , NULL);
+        message.exec();
+    }
+    else if (value == ui->LiEd_PsWd->text().toStdString())
     {
-        WinClass *mw=new WinClass(u);
-        mw->setWindowFlag(Qt::Window);
-        mw->setWindowModality(Qt::WindowModal);
-        mw->show();
+        MWindow *w=new MWindow(Number);
+        w->setWindowFlag(Qt::Window);
+        w->setWindowModality(Qt::WindowModal);
+        w->show();
         this->close();
-    }*/
+    }
+    else {
+        QMessageBox message(QMessageBox::Information, "", "密码错误", QMessageBox::Yes
+            , NULL);
+        message.exec();
+    }
 }
 void LogIn::paintEvent(QPaintEvent* event)
 {

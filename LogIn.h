@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QWidget>
 #include "ui_LogIn.h"
+#include "Custom.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class LogInClass; };
@@ -20,4 +21,5 @@ public slots:
 private:
     Ui::LogInClass *ui;
     void paintEvent(QPaintEvent* event);
+    Custom_Tree *ct;
 };

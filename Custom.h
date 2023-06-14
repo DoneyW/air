@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include<string>
+#include<vector>
 using std::string;
 struct Custom {
 	string name;
@@ -11,6 +12,7 @@ struct Custom {
 class Custom_Tree {   //红黑树，用于查找用户
 public:
 	Custom_Tree();
+	Custom_Tree(std::vector<Custom> &cus);
 	string get(string IDNumber);//查找节点，查询成功返回密码，查询失败返回空字符串
 
 	//void deleteCustom();//

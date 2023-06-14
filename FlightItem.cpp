@@ -1,4 +1,4 @@
-#include "FlightItem.h"
+ï»¿#include "FlightItem.h"
 #include "qscrollbar.h"
 FlightItem::FlightItem(Path path,QWidget *parent)
 	: QWidget(parent)
@@ -27,11 +27,14 @@ FlightItem::FlightItem(Path path,QWidget *parent)
 		if (i % 2 == 0) {
 			ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString::fromStdString(path.city[i/2])));
 		}
-		else ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString::fromLocal8Bit("¡ª¡ª>")));
+		else ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString::fromLocal8Bit("â€”â€”>")));
 	}
 	ui->Lab_Length->setText(QString::number(path.total_length));
 	ui->Lab_Price->setText(QString::number(path.total_prices));
 	ui->Lab_Tickets->setText(QString::number(path.tickets));
+	connect(ui->PsBt_Book, &QPushButton::clicked, this, [=] {
+		emit reserve(path);
+		});
 }
 
 FlightItem::~FlightItem()

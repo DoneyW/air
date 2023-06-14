@@ -1,40 +1,22 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<map>
 #include<vector>
 #include<forward_list>
 #include<algorithm>
 #include "Custom.h"
+#include "Graph.h"
 
 #define MVMAX 500
-struct Flight {
-	string start;
-	string end;
-	int length;
-	int price;
-	int tickets;
-};
 
-struct Purchase_Record {
-	string IDNumber;
-	Flight flight;
-};
-
-struct Edge { 
-    int start;
-    int end; 
-	Flight flight; 
-};
-
-struct Path {   //³ÇÊÐÖ®¼äµÄÂ·¾¶
-	std::vector<std::string> city;
-	int total_prices; //×ÜÆ±¼Û
-	int total_length; //×Ü¾àÀë
-	int tickets; //ÓàÆ±
-};
 
 class TicketSystem { 
 public:
-	 bool purchaseTicket(Path path, int numtickets, std::string IDNumber); 
-     bool refundTicket(Path path, int numtickets, std::string IDNumber);
+	TicketSystem(std::string IDNumber,Graph *graph);
+	 bool purchaseTicket(Path path); 
+	 bool refundTicket(std::string st, std::string ed, std::string IDNumber);
 
-private: Graph& graph; std::vector purchase_records; };
+private: 
+	Graph* graph; 
+	std::vector<Purchase_Record> purchase_records;
+	std::string IDNumber;
+};

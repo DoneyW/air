@@ -104,6 +104,89 @@ Path Graph::getPath(std::string departure, std::string destination) {
         }
         return path;//返回路径
     }
+Path Graph::getCheapestPath(std::string departure, std::string destination) {
+    Path path = getPath(departure, destination);
+    std::vector<std::string> city = path.city;
+    while (city.size() > 2) {
+        int min_price = INT_MAX;
+        std::vector<std::string>::iterator min_pos;
+        for (auto it = city.begin(); it != city.end() - 1; ++it) {
+            Path p = getPath(*it, *(it + 1));
+            if (p.total_prices < min_price) {
+                min_price = p.total_prices;
+                min_pos = it;
+                path.total_prices += min_price;
+            }
+        }
+        if (min_price == INT_MAX) {
+            break;
+        }
+        Path p = getPath(*min_pos, *(min_pos + 1));
+        path.city.erase(min_pos + 1);
+        path.city.erase(min_pos);
+        for (auto it = p.city.rbegin() + 1; it != p.city.rend(); ++it) {
+            path.city.insert(min_pos, *it);
+        }
+    }
+    return path;
+}
+
+Path Graph::getShortestPath(std::string departure, std::string destination) {
+    Path path = getPath(departure, destination);
+    std::vector<std::string> city = path.city;
+    while (city.size() > 2) {
+        int min_length = INT_MAX;
+        std::vector<std::string>::iterator min_pos;
+        for (auto it = city.begin(); it != city.end() - 1; ++it) {
+            Path p = getPath(*it, *(it + 1));
+            if (p.total_length < min_length) {
+                min_length = p.total_length;
+                min_pos = it;
+                path.total_length += min_length;
+            }
+        }
+        if (min_length == INT_MAX) {
+            break;
+        }
+        Path p = getPath(*min_pos, *(min_pos + 1));
+        path.city.erase(min_pos + 1);
+        path.city.erase(min_pos);
+        for (auto it = p.city.rbegin() + 1; it != p.city.rend(); ++it) {
+            path.city.insert(min_pos, *it);
+        }
+    }
+    return path;
+}
+
+int Graph::getIdx(std::string place)
+{
+    return Map_Vex_To_Index[place];
+}
+
+Purchase_Record Graph::buyTicket(int start, int end,std::string IDNumber)
+{
+    std::forward_list<Edge>::iterator i;
+    for (i = List[start].begin(); i != List[start].end(); ++i)
+    {
+        if (end == (*i).index) {
+            (*i).flight.tickets--;
+            Purchase_Record record = { IDNumber,(*i).flight };
+            return record;
+        }
+    }
+}
+
+void Graph::refundTicket(int start, int end)
+{
+    std::forward_list<Edge>::iterator i;
+    for (i = List[start].begin(); i != List[start].end(); ++i)
+    {
+        if (end == (*i).index) {
+            (*i).flight.tickets++;
+            return;
+        }
+    }
+}
 
 
 
