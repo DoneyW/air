@@ -1,30 +1,35 @@
-#pragma once
+ï»¿#pragma once
 #include"Custom.h"
 #include<fstream>
 #include"Graph.h"
 // test
-//ĞÕÃû ÃÜÂë ÄêÁä ÕËºÅ ÊÖ»úºÅ
-bool addCustom(Custom custom);  //×·¼ÓĞ´ÈëÒ»¸öCustom
+//å§“å å¯†ç  å¹´é¾„ è´¦å· æ‰‹æœºå·
+bool addCustom(Custom custom);  //è¿½åŠ å†™å…¥ä¸€ä¸ªCustom
 
-//³ÇÊĞÃû£¨×Ö·û´®£©
-bool addCity(string city);//×·¼ÓĞ´ÈëÒ»¸ö³ÇÊĞ
+//åŸå¸‚åï¼ˆå­—ç¬¦ä¸²ï¼‰
+bool addCity(string city);//è¿½åŠ å†™å…¥ä¸€ä¸ªåŸå¸‚
 
 
-//Ê¼·¢µØ Ä¿µÄµØ ¾àÀë Æ±¼Û ÓàÆ±
-bool addFlight(Flight flight);//×·¼ÓĞ´ÈëÒ»¸öº½°à
+//å§‹å‘åœ° ç›®çš„åœ° è·ç¦» ç¥¨ä»· ä½™ç¥¨
+bool addFlight(Flight flight);//è¿½åŠ å†™å…¥ä¸€ä¸ªèˆªç­
 
-//1¸öÕËºÅ 1¸öĞĞ°ï
+//1ä¸ªè´¦å· 1ä¸ªè¡Œå¸®
 void addRecord(Purchase_Record record);
 
-std::vector<Custom> getCustom();//¶ÁÈ¡ËùÓĞCustom
+std::vector<Custom> getCustom();//è¯»å–æ‰€æœ‰Custom
 
-std::vector<string> getCity();//¶ÁÈ¡ËùÓĞ³ÇÊĞ
+std::vector<string> getCity();//è¯»å–æ‰€æœ‰åŸå¸‚
 
-std::vector<Flight> getFlight();//¶ÁÈ¡ËùÓĞº½°à
+std::vector<Flight> getFlight();//è¯»å–æ‰€æœ‰èˆªç­
 
-std::vector<Purchase_Record> getRecord(std::string IDNumber);//¶ÁÈ¡ËùÓĞ¹ºÂò¼ÇÂ¼
-void writeGraph(Graph graph);
+std::vector<Purchase_Record> getRecord(std::string IDNumber);//è¯»å–æ‰€æœ‰è´­ä¹°è®°å½•
 
-void writeCustom(std::vector<string>);
+std::vector<Purchase_Record> getALLRecord();
+
+void writeGraph(Graph *graph);
+
+void writeCustom(std::vector<Custom>);
 
 void writeRecord(std::vector<Purchase_Record>);
+
+void writeFlight(std::vector<Flight>);

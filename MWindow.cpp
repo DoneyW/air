@@ -25,26 +25,38 @@ MWindow::MWindow(std::string IDNumber, QWidget *parent)
 	}
 	ticket = new TicketSystem(IDNumber,graph);//
 	connect(ui->PsBt_Search, &QPushButton::clicked, this, [=] {
-		Path path = graph->getPath(ui->Cbb_Start->currentText().toStdString(), ui->Cbb_End
+		Path path;
+		if (ui->Rdb_Change->isChecked()) {
+			path=graph->getPath(ui->Cbb_Start->currentText().toStdString(), ui->Cbb_End
 			->currentText().toStdString());
+		}
+		else if (ui->Rdb_Time->isChecked()) {
+			path = graph->getShortestPath(ui->Cbb_Start->currentText().toStdString(), ui->Cbb_End
+				->currentText().toStdString());
+		}
+		else if (ui->Rdb_prices->isChecked()) {
+			path = graph->getCheapestPath(ui->Cbb_Start->currentText().toStdString(), ui->Cbb_End
+				->currentText().toStdString());
+		}
 		if (path.city.size() == 0) {
 			QMessageBox message(QMessageBox::Information, " ", "找不到航班", QMessageBox
 				::Yes, NULL);
 			message.exec();
 			return;
 		}
-		flight = new FlightItem(path,this);
+		FlightItem *flight = new FlightItem(path,this);
+		connect(flight, SIGNAL(reserve(Path)), this, SLOT(Reserve(Path)));
 		flight->setGeometry(40, 150, 442, 125);
 		flight->setVisible(true);
 		});
 	connect(ui->PsBt_Booked, &QPushButton::clicked, this, [=] {
-		Booked* b = new Booked(this);
-		connect(b, SIGNAL(b->MySignal(std::string, std::string)), this, SLOT(Refund(std::string, std::string)));
+		Booked* b = new Booked(IDNumber,this);
+		connect(b, &Booked::MySignal, this, &MWindow::Refund);
 		b->setWindowFlag(Qt::Window);
 		b->setWindowModality(Qt::WindowModal);
 		b->show();
 		});
-	connect(flight, SIGNAL(flight->reserve(Path)), this, SLOT(reserve(Path)));
+	ui->Rdb_Change->setChecked(true);
 }
 
 MWindow::~MWindow()
@@ -54,7 +66,12 @@ MWindow::~MWindow()
 
 void MWindow::Refund(std::string st, std::string ed) {
 	ticket->refundTicket(st, ed,IDNumber);
+	QMessageBox message(QMessageBox::Information, "", "退票成功！", QMessageBox::Yes, NULL);
+	message.exec();
 }
-void MWindow::reserve(Path path) {
+void MWindow::Reserve(Path path) {
+	qDebug() << "get reserve signal";
 	ticket->purchaseTicket(path);
+	QMessageBox message(QMessageBox::Information, "", "购票成功！", QMessageBox::Yes, NULL);
+	message.exec();
 }

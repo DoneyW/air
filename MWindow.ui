@@ -19,14 +19,14 @@
   <widget class="QRadioButton" name="Rdb_prices">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>770</x>
      <y>270</y>
-     <width>95</width>
+     <width>81</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>按花费排序</string>
+    <string>花费最少</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="Rdb_Time">
@@ -39,20 +39,20 @@
     </rect>
    </property>
    <property name="text">
-    <string>按到达时间排序</string>
+    <string>距离最短</string>
    </property>
   </widget>
   <widget class="QRadioButton" name="Rdb_Change">
    <property name="geometry">
     <rect>
-     <x>770</x>
+     <x>530</x>
      <y>270</y>
      <width>111</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>按转机次数排序</string>
+    <string>转机次数最少</string>
    </property>
   </widget>
   <widget class="QComboBox" name="Cbb_Start">

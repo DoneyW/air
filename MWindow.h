@@ -4,6 +4,8 @@
 #include "ui_MWindow.h"
 #include "TicketSystem.h"
 #include "Graph.h"
+#include "FlightItem.h"
+#include "MyWidget.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MWindowClass; };
 QT_END_NAMESPACE
@@ -17,11 +19,11 @@ public:
 	~MWindow();
 public slots:
 	void Refund(std::string, std::string);
-	void reserve(Path);
+	void Reserve(Path);
+signals:
 private:
 	Ui::MWindowClass *ui;
 	std::string IDNumber;
 	Graph* graph;
 	TicketSystem* ticket;
-	FlightItem* flight;
 };

@@ -33,6 +33,7 @@ public:
 	int getIdx(std::string);
 	Purchase_Record buyTicket(int start, int end, std::string IDNumber);
 	void refundTicket(int start, int end);
+	std::vector<Flight> getFlight();
 private:
 	int vexnum = 0;
 	int arcnum = 0;

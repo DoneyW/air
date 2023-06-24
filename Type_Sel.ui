@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Type_SelClass</class>
+ <widget class="QWidget" name="Type_SelClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>275</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Type_Sel</string>
+  </property>
+  <widget class="QPushButton" name="PsBt_admin">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>300</width>
+     <height>275</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>管理员</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="PsBt_user">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>0</y>
+     <width>300</width>
+     <height>275</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>用户</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>PsBt_user</sender>
+   <signal>clicked()</signal>
+   <receiver>Type_SelClass</receiver>
+   <slot>user()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>424</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>250</x>
+     <y>-21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>PsBt_admin</sender>
+   <signal>clicked()</signal>
+   <receiver>Type_SelClass</receiver>
+   <slot>admin()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>-17</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>user()</slot>
+  <slot>admin()</slot>
+ </slots>
+</ui>

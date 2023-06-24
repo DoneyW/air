@@ -4,6 +4,9 @@
 #include "ui_Admin.h"
 #include "AddCity.h"
 #include "AddFlight.h"
+#include "DelCity.h"
+#include "DelFilght.h"
+#include "DelCustom.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; };
@@ -22,4 +25,7 @@ private:
 	void CloseWidget();
 	AddCity* city=NULL;
 	AddFlight* flight = NULL;
+	DelCity* delCity = NULL;
+	DelCustom* delCustom = NULL;
+	DelFilght* delFlight = NULL;
 };

@@ -10,7 +10,7 @@
 #define MVMAX 500
 TicketSystem::TicketSystem(std::string IDNumber,Graph *graph) :IDNumber(IDNumber),graph(graph)
 {
-    purchase_records = getRecord(IDNumber);
+    purchase_records = getALLRecord();
 }
 //购买机票
 bool TicketSystem:: purchaseTicket(Path path) {
@@ -22,8 +22,9 @@ bool TicketSystem:: purchaseTicket(Path path) {
         int idx2 = graph->getIdx(path.city[i + 1]);
         purchase_records.push_back(graph->buyTicket(idx1, idx2,IDNumber));
     }
-    writeGraph(*graph);
+    writeGraph(graph);
     writeRecord(purchase_records);
+    return true;
 }
 
 
@@ -39,8 +40,9 @@ bool TicketSystem:: refundTicket(std::string st,std::string ed,std::string IDNum
             purchase_records.erase(purchase_records.begin()+i);
         }
     }
-    writeGraph(*graph);
+    writeGraph(graph);
     writeRecord(purchase_records);
+    return true;
 }
 
 

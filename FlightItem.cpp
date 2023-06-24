@@ -27,13 +27,15 @@ FlightItem::FlightItem(Path path,QWidget *parent)
 		if (i % 2 == 0) {
 			ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString::fromStdString(path.city[i/2])));
 		}
-		else ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString::fromLocal8Bit("——>")));
+		else ui->Tbw_Path->setItem(0, i, new QTableWidgetItem(QString("——>")));
 	}
 	ui->Lab_Length->setText(QString::number(path.total_length));
 	ui->Lab_Price->setText(QString::number(path.total_prices));
 	ui->Lab_Tickets->setText(QString::number(path.tickets));
 	connect(ui->PsBt_Book, &QPushButton::clicked, this, [=] {
+		qDebug() << "pressed bookbutton";
 		emit reserve(path);
+		ui->Lab_Tickets->setText(QString::number(path.tickets - 1));
 		});
 }
 

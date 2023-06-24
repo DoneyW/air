@@ -1,14 +1,12 @@
 ﻿#include "Booked.h"
 #include"File.h"
 #include "MyWidget.h"
-Booked::Booked(QWidget *parent)
-	: QWidget(parent)
+Booked::Booked(std::string IDNumber, QWidget *parent)
+	: IDNumber(IDNumber),QWidget(parent)
 	, ui(new Ui::BookedClass())
 {
 	ui->setupUi(this);
-	rcs = getRecord(IDNumber);
-	MyWidget* widget = new MyWidget(rcs, this);
-	connect(widget, SIGNAL(widget->refund(std::string st,std::string ed)), this,  SLOT(MySlot(std::string,std::string)));
+	ReNew();
 }
 
 Booked::~Booked()
@@ -19,4 +17,17 @@ Booked::~Booked()
 void Booked::MySlot(std::string st, std::string ed)
 {
 	emit MySignal(st, ed);
+}
+
+void Booked::ReNew() {
+	if (widget)
+	{
+		delete widget;
+		widget = NULL;
+	}
+	rcs = getRecord(IDNumber);
+	widget = new MyWidget(rcs, this);
+	widget->setGeometry(10, 10, 480, 600);
+	widget->setVisible(true);
+	connect(widget, &MyWidget::refund, this, &Booked::MySlot);
 }

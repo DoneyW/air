@@ -15,7 +15,6 @@ public slots:
 signals:
 	void refund(std::string,std::string);
 
-
 private:
 	std::vector<Purchase_Record> rcs;
 };
