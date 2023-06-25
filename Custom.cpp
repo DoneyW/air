@@ -27,8 +27,8 @@ void Custom_Tree::put(string IDNumber, string passWord)
 Custom_Tree::Node* Custom_Tree::rotateRight(Node* h)
 {
 	Node* x = h->left;
-	h->right = x->right;
-	x->left = h;
+	h->left = x->right;
+	x->right = h;
 	x->color = h->color;
 	h->color = RED;
 	x->N = h->N;
@@ -57,8 +57,8 @@ void Custom_Tree::flipColors(Node* h)
 
 int Custom_Tree::size(Node* h)
 {
-	if (!h) return 0;
-	return 1 + size(h->left) + size(h->right);
+	if (h == NULL) return 0;
+	return 1 + size(h->left) + size(h -> right);
 }
 
 bool Custom_Tree::isRed(Node* h)

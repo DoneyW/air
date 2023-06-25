@@ -20,8 +20,8 @@ void FlightWidget::IniteWidget()
 	for (int i = 0; i < 6; ++i) setColumnWidth(i, 90);
 	setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList headList;
-	headList << QStringLiteral("账号") << QStringLiteral("姓名") << QStringLiteral(
-		"年龄") << QStringLiteral("电话") << QStringLiteral("操作");
+	headList << QStringLiteral("始发地") << QStringLiteral("目的地") << QStringLiteral(
+		"距离") << QStringLiteral("票价") << QStringLiteral("余票")<<QStringLiteral("操作");
 	setHorizontalHeaderLabels(headList);
 	for (int i = 0; i < fls.size(); ++i)
 	{

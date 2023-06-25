@@ -7,7 +7,7 @@ bool addCustom(Custom custom)
 	char c, temp = NULL;
 
 	ifs >> c;
-	if (!ifs.eof())
+	if (ifs.eof())
 	{
 		temp = '\n';
 	}
@@ -32,7 +32,7 @@ bool addCity(string city)
 	char c, temp = NULL;
 
 	ifs >> c;
-	if (!ifs.eof())
+	if (ifs.eof())
 	{
 		temp = '\n';
 	}
@@ -53,7 +53,7 @@ bool addFlight(Flight flight)
 	char c, temp = NULL;
 
 	ifs >> c;
-	if (!ifs.eof())
+	if (ifs.eof())
 	{
 		temp = '\n';
 	}
@@ -78,7 +78,7 @@ void addRecord(Purchase_Record record)
 	char c, temp = NULL;
 
 	ifs >> c;
-	if (!ifs.eof())
+	if (ifs.eof())
 	{
 		temp = '\n';
 	}

@@ -12,11 +12,17 @@ struct Flight {
 	int price;
 	int tickets;
 };
+
 struct Path {   //城市之间的路径
 	std::vector<std::string> city;
 	int total_prices; //总票价
 	int total_length; //总距离
 	int tickets; //余票
+};
+struct PathPriceCmp {
+    bool operator() (const Path& p1, const Path& p2) {
+        return p1.total_prices < p2.total_prices;
+    }
 };
 struct Purchase_Record {
 	string IDNumber;
@@ -28,7 +34,7 @@ public:
 	void addVex(std::string city);
 	void addArc(std::string departure, std::string destination, int length, int price,int tickets);
 	Path getPath(std::string departure, std::string destination);
-	Path getCheapestPath(std::string departure, std::string destination); //获取最便宜路径
+	Path getCheapestPath(std::string departure, std::string destination);
 	Path getShortestPath(std::string departure, std::string destination); //获取最短路径
 	int getIdx(std::string);
 	Purchase_Record buyTicket(int start, int end, std::string IDNumber);

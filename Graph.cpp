@@ -5,6 +5,7 @@
 #include<forward_list>
 #include "Custom.h"
 #include "Graph.h"
+#include <algorithm>
 #define MVMAX 500
 Graph::Graph() {
         vexnum = 0;
@@ -226,11 +227,6 @@ Path Graph::getShortestPath(std::string departure, std::string destination) {
     return path;//返回路径
 }
 
-
-
-
-
-
 Path Graph::getCheapestPath(std::string departure, std::string destination) {
     Path path;//初始化路径
     path.total_prices = 0;//初始化总价格为0
@@ -239,105 +235,80 @@ Path Graph::getCheapestPath(std::string departure, std::string destination) {
 
     int start = Map_Vex_To_Index[departure];//获取起点在顶点数组中的索引
     int end = Map_Vex_To_Index[destination];//获取终点在顶点数组中的索引
-
     std::vector<bool> visited(vexnum, false);//初始化访问数组
     std::vector<int> dist(vexnum, INT_MAX);//初始化距离数组
     std::vector<int> prev(vexnum, -1);//初始化前驱节点数组
+    std::vector<Path> paths(vexnum);//用于存储起点到每个顶点的最短路径信息
 
-    dist[start] = 0;//将起点到起点的距离设置为0
+    dist[start] = 0;//将起点到起点的距离设置为0   
 
-    std::map<Path*, bool> PQ;//使用优先队列存储所有路径
-
-    //将起点加入优先队列
-    Path* pPath = new Path;
-    pPath->city.push_back(departure);
-    pPath->total_prices = 0;
-    pPath->total_length = 0;
-    pPath->tickets = 50;
-    PQ[pPath] = true;
-
-    //使用Dijkstra算法计算最便宜路径
-    while (!PQ.empty())
-    {
-        //取出优先队列中票价最小的路径
-        auto it = PQ.begin();
-        Path* tmpPath = it->first;
-        PQ.erase(it);
-
-        if (visited[Map_Vex_To_Index[tmpPath->city.back()]]) {//目标城市已经被访问过，则前面找到的是最优解
-            path = *tmpPath;
+//使用Dijkstra算法计算最短路径
+    while (!visited[end]) {
+        int min_dist = INT_MAX;
+        int u = -1;
+        for (int i = 0; i < vexnum; i++) {
+            if (!visited[i] && dist[i] < min_dist) {
+                u = i;
+                min_dist = dist[i];
+            }
+        }
+        if (u == -1) {
             break;
         }
+        visited[u] = true;
 
-        //当前路径访问的最后一个城市标记为已经访问过
-        visited[Map_Vex_To_Index[tmpPath->city.back()]] = true;
-
-        //遍历所有邻接节点
-        for (auto& edge : List[Map_Vex_To_Index[tmpPath->city.back()]]) {
-            //获取邻接节点在顶点数组中的索引
+        for (auto& edge : List[u]) {
             int v = edge.index;
-            //获取边的价格
             int price = edge.flight.price;
 
-            if (!visited[v]) {
-                //计算新路径的总价格
-                int new_price = tmpPath->total_prices + price;
-                //如果当前节点未被访问过，则将该节点加入优先队列
-                if (dist[v] == INT_MAX) {
-                    Path* pNewPath = new Path;
-                    pNewPath->city = tmpPath->city;
-                    pNewPath->city.push_back(vex[v]);
-                    pNewPath->total_prices = new_price;
-                    pNewPath->total_length = tmpPath->total_length + edge.flight.length;
-                    pNewPath->tickets = std::min(tmpPath->tickets, edge.flight.tickets);
-                    PQ[pNewPath] = true;
-                    dist[v] = new_price;
-                    prev[v] = Map_Vex_To_Index[tmpPath->city.back()];
-                }
-                //如果当前节点已被访问过，则更新该节点的路径信息
-                else if (new_price < dist[v]) {
-                    auto it = PQ.begin();
-                    while (it != PQ.end())
-                    {
-                        if (it->first->city.back() == vex[v])
-                        {
-                            PQ.erase(it++);
-                        }
-                        else
-                        {
-                            ++it;
-                        }
-                    }
+            if (!visited[v] && dist[u] + price < dist[v]) {
+                dist[v] = dist[u] + price;
+                prev[v] = u;
+                paths[v].city.push_back(vex[u]);
+                paths[v].total_prices = price;
+            }
+        }
+    }
 
-                    Path* pNewPath = new Path;
-                    pNewPath->city = tmpPath->city;
-                    pNewPath->city.push_back(vex[v]);
-                    pNewPath->total_prices = new_price;
-                    pNewPath->total_length = tmpPath->total_length + edge.flight.length;
-                    pNewPath->tickets = std::min(tmpPath->tickets, edge.flight.tickets);
-                    PQ[pNewPath] = true;
+    //遍历起点到终点的所有路径，找到价格最低的路径
+    std::vector<Path> allPaths;//存储所有路径
+    for (int i = 0; i < vexnum; i++) {
+        if (i == start) {
+            continue;
+        }
+        if (paths[i].city.empty()) {//若该顶点不可达，则跳过
+            continue;
+        }
+        paths[i].city.push_back(vex[i]);
+        allPaths.push_back(paths[i]);
+    }
+    std::sort(allPaths.begin(), allPaths.end(), PathPriceCmp());//按价格排序
 
-                    dist[v] = new_price;
-                    prev[v] = Map_Vex_To_Index[tmpPath->city.back()];
+    for (auto& p : allPaths) {
+        if (p.city.back() == destination && p.total_prices < path.total_prices) {
+            path = p;
+        }
+    }
+
+    if (path.total_prices == INT_MAX) {
+        std::cout << "No path found!" << std::endl;
+    }
+    else {
+        //遍历城市列表中相邻的城市，计算总长度及可售票数
+        for (int i = 0; i < path.city.size() - 1; i++) {
+            std::string start = path.city[i];
+            std::string end = path.city[i + 1];
+            for (auto& edge : List[Map_Vex_To_Index[start]]) {
+                if (edge.flight.end == end) {
+                    path.total_length += edge.flight.length;
+                    path.tickets = std::min(path.tickets, edge.flight.tickets);
+                    break;
                 }
             }
         }
-        delete tmpPath;
     }
-
-    //若终点未被访问过则说明不存在路径
-    if (!visited[end]) {
-        std::cout << "No path found!" << std::endl;
-    }
-
-    return path;//返回路径
-}
-
-
-
-
-
-
+    return path;
+} //获取最便宜路径
 
 
 

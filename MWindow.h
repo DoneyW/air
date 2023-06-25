@@ -26,4 +26,5 @@ private:
 	std::string IDNumber;
 	Graph* graph;
 	TicketSystem* ticket;
+	FlightItem* flight=NULL;
 };

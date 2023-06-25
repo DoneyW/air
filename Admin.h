@@ -7,7 +7,7 @@
 #include "DelCity.h"
 #include "DelFilght.h"
 #include "DelCustom.h"
-
+#include "DelCity.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class AdminClass; };
 QT_END_NAMESPACE

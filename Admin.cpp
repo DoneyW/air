@@ -28,6 +28,12 @@ Admin::Admin(QWidget *parent)
 		delFlight->setGeometry(100, 0, 700, 450);
 		delFlight->setVisible(true);
 		});
+	connect(ui->PsBt_delCity, &QPushButton::clicked, this, [=] {
+		CloseWidget();
+		delCity = new DelCity(this);
+		delCity->setGeometry(100, 0, 700, 450);
+		delCity->setVisible(true);
+		});
 }
 
 Admin::~Admin()

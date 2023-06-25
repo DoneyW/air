@@ -44,7 +44,11 @@ MWindow::MWindow(std::string IDNumber, QWidget *parent)
 			message.exec();
 			return;
 		}
-		FlightItem *flight = new FlightItem(path,this);
+		if (flight) {
+			delete flight;
+			flight = NULL;
+		}
+		flight = new FlightItem(path,this);
 		connect(flight, SIGNAL(reserve(Path)), this, SLOT(Reserve(Path)));
 		flight->setGeometry(40, 150, 442, 125);
 		flight->setVisible(true);
